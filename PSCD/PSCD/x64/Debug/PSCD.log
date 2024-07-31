@@ -1,4 +1,18 @@
-﻿  CTask.cpp
+﻿  CLogger.cpp
+  CNode.cpp
+  CNotification.cpp
+  CResource.cpp
+  CScheduler.cpp
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CScheduler.cpp(34,94): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CScheduler.cpp(41,31): warning C4244: '=': conversion from 'time_t' to 'int', possible loss of data
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CScheduler.cpp(66,37): warning C4244: '=': conversion from 'time_t' to 'int', possible loss of data
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CScheduler.cpp(77,56): warning C4805: '==': unsafe mix of type 'int' and type 'bool' in operation
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CScheduler.cpp(79,30): warning C4244: '=': conversion from 'time_t' to 'int', possible loss of data
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CScheduler.cpp(96,31): warning C4244: '=': conversion from 'time_t' to 'int', possible loss of data
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CScheduler.cpp(120,16): warning C4244: 'initializing': conversion from 'time_t' to 'int', possible loss of data
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CScheduler.cpp(134,19): warning C4806: '==': unsafe operation: no value of type 'bool' promoted to type 'int' can equal the given constant
+  CTask.cpp
+  CUtils.cpp
   Source.cpp
   Generating Code...
-  PSCD.vcxproj -> C:\Users\cetasc\source\repos\PSCD\x64\Debug\PSCD.exe
+  PSCD.vcxproj -> C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\x64\Debug\PSCD.exe
