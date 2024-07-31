@@ -1,0 +1,12 @@
+Activitate1 atm 2024-06-10 8 9
+Activitate2 atm 2024-09-10 4 8
+Activitate3 atm 2024-09-10 6 8
+Activitate4 atm 2024-09-10 10 8
+Activitate5 atm 2024-09-10 3 8
+Activitate6 atm 2024-09-10 5 8
+Activitate7 atm 2024-09-10 6 8
+Activitate8 atm 2024-09-10 7 8
+Activitate9 atm 2024-09-10 17 8
+Activitate10 atm 2024-09-10 9 8
+Activitate11 atm 2024-09-10 14 8
+Activitate12 atm 2024-09-10 4 8
