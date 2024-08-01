@@ -23,6 +23,7 @@ private:
 	bool checkTaskDependencies(CTask* t, time_t startDate, time_t endDate);
 	void setTasksResourcesOcupied(CTask* t);
 
+	int scheduleTaskCaseFixed(CNode* n, CTask* t);
 	int scheduleTaskCase1(int& startTime, CTask* t);
 	int scheduleTaskCase2(int& startTime, vector<CTask*>tasks, int i);
 public:

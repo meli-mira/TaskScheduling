@@ -1,7 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
-#include<stdio.h>
-#include"CScheduler.h"
+#include "CScheduler.h"
+#include "CTimetable.h"
 int N;
 
 typedef struct process {
@@ -136,6 +136,8 @@ int main() {
 	CScheduler::getInstance()->computeOutFileForPloting(n1);
 
 	//CScheduler::getInstance()->DFS(n1);
-
+	CTimetable t(CUtils::parseDateTime("2024.02.11", "%Y.%m.%d"));
+	t.print();
+	cout << t.getNrOfJobsBetween(CUtils::parseDateTime("2024.04.11", "%Y.%m.%d"), CUtils::parseDateTime("2024.06.15", "%Y.%m.%d"));
 	return 0;
 }

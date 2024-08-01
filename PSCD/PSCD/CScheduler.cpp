@@ -28,9 +28,29 @@ void CScheduler::setTasksResourcesOcupied(CTask* t)
 	}
 }
 
+int CScheduler::scheduleTaskCaseFixed(CNode* n, CTask* t)
+{
+	/* Check if the task has fixed planning */
+	bool ok;
+	vector<CTask*> tasks = n->getTasks();
+
+	if (t->getIsFixed() == true) {
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks[i]->getHasBeenPlanned() == true && (CUtils::compareDates(t->getStartDate(), tasks[i]->getEndDate()) || CUtils::compareDates(tasks[i]->getStartDate(), t->getEndDate()))) {
+				//interval overlay
+				if (tasks[i]->getPriority() < t->getPriority()) {
+
+				}
+			}
+		}
+	}
+	return 0;
+}
+
 int CScheduler::scheduleTaskCase1(int& startTime, CTask* t)
 {
 	bool ok;
+
 	if (CUtils::compareDates(CUtils::addDays(startTime, t->getDuration()), t->getDeadline()) == true) {
 
 		ok = checkTaskDependencies(t, startTime, CUtils::addDays(startTime, t->getDuration()));
@@ -125,8 +145,9 @@ void CScheduler::scheduleTasksForNode(CNode* n)
 	vector<CTask*> tasks = n->getTasks();
 	for (int i = 0; i < tasks.size(); i++)
 	{
-		CLogger::logger(string("Scheduling task: ") + tasks[i]->getName() + string(" with deadline ") + CUtils::dateToString(tasks[i]->getDeadline(), "%Y.%m.%d") + string(" and duration ") + to_string(tasks[i]->getDuration()));
 		bool ok;
+		CLogger::logger(string("Scheduling task: ") + tasks[i]->getName() + string(" with deadline ") + CUtils::dateToString(tasks[i]->getDeadline(), "%Y.%m.%d") + string(" and duration ") + to_string(tasks[i]->getDuration()));
+		
 
 		ok = scheduleTaskCase1(startTime, tasks[i]);
 		if (ok == 1)

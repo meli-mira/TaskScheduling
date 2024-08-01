@@ -42,6 +42,8 @@ public:
 	int getPriority() const;
 	int getDuration() const;
 	bool getHasBeenPlanned() const;
+	bool getIsFixed() const;
+	bool getIsIntervalBased() const;
 	vector<CResource*> getResources() const;
 
 	void setStartDate(time_t date);

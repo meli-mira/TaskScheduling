@@ -94,6 +94,16 @@ bool CTask::getHasBeenPlanned() const
 	return hasBeenPlanned;
 }
 
+bool CTask::getIsIntervalBased() const
+{
+	return isIntervalBased;
+}
+
+bool CTask::getIsFixed() const
+{
+	return isFixed;
+}
+
 vector<CResource*> CTask::getResources() const
 {
 	return usedResources;

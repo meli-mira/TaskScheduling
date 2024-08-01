@@ -14,6 +14,7 @@ private:
 	string node_id;
 
 	string name;
+	int capacity;
 	int minPriority;
 	int maxPriority;
 
@@ -23,8 +24,6 @@ private:
 	vector<CTask*> tasks;
 
 	vector<CNotification*> notifications;
-
-	int capacity;
 	int level;
 public:
 	CNode(string name, int minPriority, int maxPriority, CNode* parentNode, int capacity, int level);

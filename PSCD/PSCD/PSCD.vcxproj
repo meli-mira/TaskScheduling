@@ -136,6 +136,7 @@
     <ClInclude Include="CResource.h" />
     <ClInclude Include="CScheduler.h" />
     <ClInclude Include="CTask.h" />
+    <ClInclude Include="CTimetable.h" />
     <ClInclude Include="CUtils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClCompile Include="CResource.cpp" />
     <ClCompile Include="CScheduler.cpp" />
     <ClCompile Include="CTask.cpp" />
+    <ClCompile Include="CTimetable.cpp" />
     <ClCompile Include="CUtils.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
