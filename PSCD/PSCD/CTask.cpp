@@ -1,6 +1,54 @@
 #include "CTask.h"
 int CTask::id = 0;
 
+int CTask::verifyInterval(CTimetable* nodeTimetable, int nodeCapacity, time_t& startDate, time_t& endDate)
+{
+	int startIndex = nodeTimetable->getIndexForDate(startDate);
+	int n = duration;
+	int nr = 0, ok = 0, resourceAlocated;
+
+	for (int i = startIndex; nr < n && i < nodeTimetable->getNrOfDays(); i++)
+	{
+		if (nodeTimetable->at(i) == -1) {
+			if (nr == 0) //the first date from interval
+				startDate = CUtils::addDays(startDate, 1);
+			endDate = CUtils::addDays(endDate, 1);
+		}
+		else if (nodeTimetable->at(i) < nodeCapacity) {
+			//resources are free?
+			resourceAlocated = 0;
+			for (int j = 0; j < usedResources.size(); j++)
+			{
+				if (usedResources[j]->isTheResourceAllocated(i) == true)
+				{
+					resourceAlocated = 1;
+					break;
+				}
+			}
+			if (resourceAlocated == 0) {
+				nr++; //all good
+			}
+			else {
+				//one of the resource is alocated in the day with index i -->try to bypass
+				startDate = nodeTimetable->getDateFromIndex(i + 1);
+				endDate = CUtils::addDays(startDate, duration -	1);
+				nr = 0;
+			}
+		}
+		else {
+			/* capacitatea maxima depasita -> resetarea intervalului */
+			startDate = nodeTimetable->getDateFromIndex(i + 1);
+			endDate = CUtils::addDays(startDate, duration - 1);
+			//cout << CUtils::dateToString(startDate, "%Y.%m.%d") << " " << CUtils::dateToString(endDate, "%Y.%m.%d") << endl;
+			nr = 0;
+		}
+
+		if (CUtils::compareDates(endDate, deadline) == false)
+			return -1;
+	}
+	return nr;
+}
+
 CTask::CTask(int priority, string name, string description, time_t deadline, int duration)
 {
 	this->priority = priority;
@@ -14,49 +62,24 @@ CTask::CTask(int priority, string name, string description, time_t deadline, int
 	id++;
 	this->hasBeenPlanned = false;
 	this->hasIssues = false;
-	this->isIntervalBased = false;
-	this->isFixed = false;
 }
 
-CTask::CTask(int priority, string name, string description, time_t startPoint, time_t deadline, int duration)
+CTask::CTask(int priority, string name, string description, time_t startPoint, time_t endPoint, int duration, TaskType type)
 {
-	/* Constructor for a task that has a not before start date */
-
 	this->priority = priority;
 	this->name = name;
 	this->description = description;
 	this->duration = duration;
 
-	this->startNoEarlierThan = startPoint;
-	this->isIntervalBased = true;
-	this->deadline = deadline;
-
-	this->task_id = to_string(id);
-	id++;
-
 	this->hasBeenPlanned = false;
 	this->hasIssues = false;
-	this->isFixed = true;
-}
-
-CTask::CTask(int priority, string name, string description, time_t startDate, time_t endDate)
-{
-	/* Constructor for a task that has a fixed schedule */
-
-	this->priority = priority;
-	this->name = name;
-	this->description = description;
-
-	this->startDate = startDate;
-	this->endDate = endDate;
+	this->taskType = type;
 
 	this->task_id = to_string(id);
 	id++;
 
-	this->hasBeenPlanned = true;
-	this->hasIssues = false;
-	this->isIntervalBased = false;
-	this->isFixed = true;
+	this->startNoEarlierThan = startPoint;
+	this->deadline = endPoint;
 }
 
 string CTask::getName() const
@@ -79,6 +102,11 @@ time_t CTask::getDeadline() const
 	return deadline;
 }
 
+time_t CTask::getStartNoEarlierThan() const
+{
+	return startNoEarlierThan;
+}
+
 int CTask::getPriority() const
 {
 	return priority;
@@ -94,9 +122,25 @@ bool CTask::getHasBeenPlanned() const
 	return hasBeenPlanned;
 }
 
+bool CTask::getIsIntervalBased() const
+{
+	if (taskType == INTERVAL_BASED)
+		return true;
+	else
+		return false;
+}
+
 vector<CResource*> CTask::getResources() const
 {
-	return usedResources;
+	return this->usedResources;
+}
+
+bool CTask::getIsFixed() const
+{
+	if (taskType == FIXED)
+		return true;
+	else
+		return false;
 }
 
 void CTask::setStartDate(time_t date)
@@ -124,11 +168,37 @@ void CTask::unsetHasBeenPlanned()
 	this->hasBeenPlanned = false;
 }
 
-void CTask::scheduleTask(time_t startDate, time_t endDate)
+void CTask::addResource(CResource* r)
 {
-	this->startDate = startDate;
-	this->endDate = endDate;
-	this->hasBeenPlanned = true;
+	this->usedResources.push_back(r);
+}
+
+int CTask::scheduleTask(CTimetable* nodeTimetable, int nodeCapacity)
+{
+	time_t startDate, endDate;
+	startDate = this->startNoEarlierThan;
+	endDate = CUtils::addDays(startDate, this->duration - 1);
+
+	int n = verifyInterval(nodeTimetable, nodeCapacity, startDate, endDate);
+	
+	if (n != -1) {
+		this->startDate = startDate;
+		this->endDate = endDate;
+		this->hasBeenPlanned = true;
+		nodeTimetable->setOcupied(startDate, endDate);
+
+		//success
+		//set the resources of the planned task ocupied
+	}
+	else {
+		//todo notification  + mai prioritar?
+		cout << "Not possible to schedule the task. there are no " << endl;
+		this->hasIssues = true;
+		this->hasBeenPlanned = false;
+		return -1;
+	}
+
+	return 0;
 }
 
 void CTask::print()

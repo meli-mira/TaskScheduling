@@ -8,26 +8,12 @@
 #include <vector>
 #include <ctime>
 #include <time.h>
-#include <openssl/sha.h>
 
 using namespace std;
 
 class CUtils
 {
 public:
-    static string sha256(const string str)
-    {
-        unsigned char hash[SHA256_DIGEST_LENGTH];
-      
-        SHA256((const char unsigned*) str.c_str(), str.size(), hash);
-
-        stringstream ss;
-        for (int i = 0; i < SHA256_DIGEST_LENGTH; i++)
-        {
-            ss << hex << setw(2) << setfill('0') << (int)hash[i];
-        }
-        return ss.str();
-    }
     static string time_to_string(time_t t)
     {
         stringstream ss;
@@ -60,9 +46,6 @@ public:
         if (x != (std::time_t)(-1) && y != (std::time_t)(-1))
         {
             difference = std::difftime(y, x) / (60 * 60 * 24);
-            std::cout << std::ctime(&x);
-            std::cout << std::ctime(&y);
-            std::cout << "difference = " << difference << " days" << std::endl;
         }
 
         return difference;
@@ -70,7 +53,7 @@ public:
 
     static time_t addDays(time_t date, int days)
     {
-        date += (60 * 60 * 24 * days);
+        date += (60 * 60 * 24 * (days));
         return date;
     }
 
@@ -79,7 +62,7 @@ public:
         date -= (60 * 60 * 24 * days);
         return date;
     }
-    static int compareDates(time_t date1, time_t date2)//date1<=date2
+    static int compareDates(time_t date1, time_t date2)// true if date1<=date2
     {
         struct tm timeinfo1, timeinfo2;
         localtime_s(&timeinfo1, &date1);

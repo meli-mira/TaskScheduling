@@ -16,6 +16,8 @@ CNode::CNode(string name, int minPriority, int maxPriority, CNode* parentNode, i
 
 	this->node_id = to_string(id);
 	id++;
+
+	timetable = new CTimetable(time(0));
 }
 
 void CNode::addChildrenNode(CNode* node)
@@ -66,12 +68,16 @@ CNode* CNode::getParentNode() const
 void CNode::readTaskFromFile(string filename)
 {
 	ifstream f(filename);
-	string taskName, taskDescription, taskDeadline;
+	string taskName, taskDescription, taskStartNoEarlienThan, taskDeadline, type;
 	int taskDuration, taskPriority;
+	CTask* t;
 
-	while (f >> taskName >> taskDescription >> taskDeadline >> taskDuration >> taskPriority)
+	while (f >> taskName >> taskPriority >> taskDescription >> type >> taskStartNoEarlienThan >> taskDeadline >> taskDuration)
 	{
-		CTask* t = new CTask(taskPriority, taskName, taskDescription, CUtils::parseDateTime(taskDeadline.c_str(), "%Y-%m-%d"), taskDuration);
+		if (type == "I")
+			t = new CTask(taskPriority, taskName, taskDescription, CUtils::parseDateTime(taskStartNoEarlienThan.c_str(), "%Y-%m-%d"), CUtils::parseDateTime(taskDeadline.c_str(), "%Y-%m-%d"), taskDuration, INTERVAL_BASED);
+		else
+			t = new CTask(taskPriority, taskName, taskDescription, CUtils::parseDateTime(taskStartNoEarlienThan.c_str(), "%Y-%m-%d"), CUtils::parseDateTime(taskDeadline.c_str(), "%Y-%m-%d"), taskDuration, FIXED);
 		tasks.push_back(t);
 	}
 
@@ -94,6 +100,20 @@ void CNode::sortTasksByDeadline()
 				tasks[j] = aux;
 			}
 		}
+	}
+}
+
+void CNode::scheduleTasks()
+{
+	time_t startDate = time(0), endDate;
+
+	// Sort tasks by deadline
+	sortTasksByDeadline();
+
+	for (int i = 0; i < tasks.size(); i++)
+	{
+		tasks[i]->scheduleTask(timetable, capacity);
+		
 	}
 }
 
