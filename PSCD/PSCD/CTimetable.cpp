@@ -1,43 +1,10 @@
 #include "CTimetable.h"
 
-int CTimetable::getIndexForDate(time_t date)
-{
-	struct tm time1;
-	localtime_s(&time1, &date);
-
-	int index = 0;
-	if (time1.tm_mon == 1)
-		index += ian;
-	else if (time1.tm_mon == 2)
-		index += ian + feb;
-	else if (time1.tm_mon == 3)
-		index += ian + feb + mar;
-	else if (time1.tm_mon == 4)
-		index += ian + feb + mar + apr;
-	else if (time1.tm_mon == 5)
-		index += ian + feb + mar + apr + may;
-	else if (time1.tm_mon == 6)
-		index += ian + feb + mar + apr + may + iun;
-	else if (time1.tm_mon == 7)
-		index += ian + feb + mar + apr + may + iun + iul;
-	else if (time1.tm_mon == 8)
-		index += ian + feb + mar + apr + may + iun + iul + aug;
-	else if (time1.tm_mon == 9)
-		index += ian + feb + mar + apr + may + iun + iul + aug + sep;
-	else if (time1.tm_mon == 10)
-		index += ian + feb + mar + apr + may + iun + iul + aug + sep + oct;
-	else
-		index += ian + feb + mar + apr + may + iun + iul + aug + sep + oct + nov;
-
-	index += time1.tm_mday;
-
-	return index;
-}
-
 CTimetable::CTimetable(time_t startDateOfCalendar)
 {
-    struct tm time;
-    localtime_s(&time, &startDateOfCalendar);
+	this->startDateOfCalendar = startDateOfCalendar;
+	struct tm time;
+	localtime_s(&time, &startDateOfCalendar);
 
 	ian = 31;
 	mar = 31;
@@ -56,6 +23,7 @@ CTimetable::CTimetable(time_t startDateOfCalendar)
 		feb = 29;
 	else
 		feb = 28;
+	nrDays = ian + feb + mar + apr + may + iun + iul + aug + sep + oct + nov + dec;
 
 	year[1] = -1;//1 ian
 	year[2] = -1;//2 ian
@@ -85,7 +53,7 @@ CTimetable::CTimetable(time_t startDateOfCalendar)
 
 	//WEEKEND-URI
 	// 01.01.2024 (monday)
-	int contor = 1;
+	int contor = 0;
 	for (int i = 2024; i < 1900 + time.tm_year; i++)
 	{
 		if (i % 400 == 0 || (i % 4 == 0 && i % 100 != 0))
@@ -93,16 +61,16 @@ CTimetable::CTimetable(time_t startDateOfCalendar)
 		else
 			contor++;
 
-		contor %= 8;
+		contor %= 7;
 	}
 
 	for (int i = 1; i <= ian + feb + mar + apr + may + iun + iul + aug + sep + oct + nov + dec; i++)
 	{
-		if (contor <= 5)//till friday
+		if (contor < 5)//till friday
 			year[i] = 0;
 		else
 			year[i] = -1;//weekend
-		contor = (contor + 1) % 8;
+		contor = (contor + 1) % 7;
 	}
 }
 
@@ -138,20 +106,105 @@ int CTimetable::getNrOfJobsBetween(time_t startDate, time_t endDate)
 	return max;
 }
 
-int CTimetable::verifyInterval(time_t& startDate, time_t& endDate)
+int CTimetable::getIndexForDate(time_t date)
 {
-	int startIndex = getIndexForDate(startDate);
-	int n = CUtils::getDaysBetween(startDate, endDate);
+	struct tm time1;
+	localtime_s(&time1, &date);
 
-	for (int i = startIndex; i <= startIndex + n; i++)
-	{
-		if (year[i] == -1)
-		{
-			CUtils::addDays(endDate, 1);
-			n++;
-		}
+	int index = 0;
+	if (time1.tm_mon == 1)
+		index += ian;
+	else if (time1.tm_mon == 2)
+		index += ian + feb;
+	else if (time1.tm_mon == 3)
+		index += ian + feb + mar;
+	else if (time1.tm_mon == 4)
+		index += ian + feb + mar + apr;
+	else if (time1.tm_mon == 5)
+		index += ian + feb + mar + apr + may;
+	else if (time1.tm_mon == 6)
+		index += ian + feb + mar + apr + may + iun;
+	else if (time1.tm_mon == 7)
+		index += ian + feb + mar + apr + may + iun + iul;
+	else if (time1.tm_mon == 8)
+		index += ian + feb + mar + apr + may + iun + iul + aug;
+	else if (time1.tm_mon == 9)
+		index += ian + feb + mar + apr + may + iun + iul + aug + sep;
+	else if (time1.tm_mon == 10)
+		index += ian + feb + mar + apr + may + iun + iul + aug + sep + oct;
+	else if (time1.tm_mon == 11)
+		index += ian + feb + mar + apr + may + iun + iul + aug + sep + oct + nov;
+
+	index += time1.tm_mday;
+
+	return index;
+}
+
+time_t CTimetable::getDateFromIndex(int index)
+{
+	struct tm time;
+	localtime_s(&time, &startDateOfCalendar);
+
+	if (index <= ian) {
+		time.tm_mon = 0;
+		time.tm_mday = index;
 	}
-	return n;
+	else if (index <= ian + feb) {
+		time.tm_mon = 1;
+		time.tm_mday = index - ian;
+	}
+	else if (index <= ian + feb + mar) {
+		time.tm_mon = 2;
+		time.tm_mday = index - (ian + feb);
+	}
+	else if (index <= ian + feb + mar + apr) {
+		time.tm_mon = 3;
+		time.tm_mday = index - (ian + feb + mar);
+	}
+	else if (index <= ian + feb + mar + apr + may) {
+		time.tm_mon = 4;
+		time.tm_mday = index - (ian + feb + mar + apr);
+	}
+	else if (index <= ian + feb + mar + apr + may + iun) {
+		time.tm_mon = 5;
+		time.tm_mday = index - (ian + feb + mar + apr + may);
+	}
+	else if (index <= ian + feb + mar + apr + may + iun + iul) {
+		time.tm_mon = 6;
+		time.tm_mday = index - (ian + feb + mar + apr + may + iun);
+	}
+	else if (index <= ian + feb + mar + apr + may + iun + iul + aug) {
+		time.tm_mon = 7;
+		time.tm_mday = index - (ian + feb + mar + apr + may + iun + iul);
+	}
+	else if (index <= ian + feb + mar + apr + may + iun + iul + aug + sep) {
+		time.tm_mon = 8;
+		time.tm_mday = index - (ian + feb + mar + apr + may + iun + iul + aug);
+	}
+	else if (index <= ian + feb + mar + apr + may + iun + iul + aug + sep + oct) {
+		time.tm_mon = 9;
+		time.tm_mday = index - (ian + feb + mar + apr + may + iun + iul + aug + sep);
+	}
+	else if (index <= ian + feb + mar + apr + may + iun + iul + aug + sep + oct + nov) {
+		time.tm_mon = 10;
+		time.tm_mday = index - (ian + feb + mar + apr + may + iun + iul + aug + sep + oct);
+	}
+	else {
+		time.tm_mon = 11;
+		time.tm_mday = index - (ian + feb + mar + apr + may + iun + iul + aug + sep + oct + nov);
+	}
+
+	return mktime(&time);
+}
+
+int CTimetable::getNrOfDays()
+{
+	return nrDays;
+}
+
+int CTimetable::at(int i)
+{
+	return year[i];
 }
 
 CTimetable::~CTimetable()

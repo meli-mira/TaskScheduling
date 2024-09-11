@@ -5,6 +5,7 @@
 #include <fstream>
 #include "CTask.h"
 #include "CNotification.h"
+#include "CTimetable.h"
 
 using namespace std;
 class CNode
@@ -20,11 +21,12 @@ private:
 
 	CNode* parentNode;
 	vector<CNode*> childNodes;
-
 	vector<CTask*> tasks;
-
 	vector<CNotification*> notifications;
+
 	int level;
+
+	CTimetable* timetable;
 public:
 	CNode(string name, int minPriority, int maxPriority, CNode* parentNode, int capacity, int level);
 
@@ -45,6 +47,8 @@ public:
 	vector<CTask*> getTasks() const;
 
 	void sortTasksByDeadline();
+
+	void scheduleTasks();
 
 	~CNode();
 };

@@ -7,7 +7,10 @@
 #include <vector>
 #include "CUtils.h"
 using namespace std;
-
+typedef enum TaskType
+{
+	FIXED, INTERVAL_BASED
+};
 class CTask
 {
 private:
@@ -24,21 +27,23 @@ private:
 	time_t deadline;
 	time_t startNoEarlierThan;
 
-	bool isFixed;
-	bool isIntervalBased;
 	bool hasIssues;
 	bool hasBeenPlanned;
 
 	vector<CResource*> usedResources;
+	TaskType taskType;
+
+	int verifyInterval(CTimetable* nodeTimetable, int nodeCapacity, time_t& startTime, time_t& stopTime);
 public:
 	CTask(int priority, string name, string description, time_t deadline, int duration);
-	CTask(int priority, string name, string description, time_t startPoint, time_t deadline, int duration);
-	CTask(int priority, string name, string description, time_t startDate, time_t endDate);
+	CTask(int priority, string name, string description, time_t startPoint, time_t endPoint, int duration, TaskType type);
 
 	string getName() const;
 	time_t getStartDate() const;
 	time_t getEndDate() const;
 	time_t getDeadline() const;
+	time_t getStartNoEarlierThan() const;
+
 	int getPriority() const;
 	int getDuration() const;
 	bool getHasBeenPlanned() const;
@@ -52,7 +57,9 @@ public:
 	void setHasBeenPlanned();
 	void unsetHasBeenPlanned();
 
-	void scheduleTask(time_t startDate, time_t endDate);
+	void addResource(CResource* r);
+
+	int scheduleTask(CTimetable* nodeTimetable, int nodeCapacity);
 
 	void print();
 

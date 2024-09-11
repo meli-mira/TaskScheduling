@@ -11,16 +11,6 @@ typedef struct process {
 }process;
 process P[10];
 
-void get() {
-	FILE* f = fopen("in.txt", "r");
-	scanf("%d", &N);
-
-	for (int i = 0; i < N; i++) {
-		fscanf(f,"%c %d %d %d\n", &P[i].name, &P[i].duration, &P[i].deadline, &P[i].priority);
-	}
-	fclose(f);
-}
-
 void put(int N) {
 	printf("PROCESS\tSTART-TIME\tEND-TIME\n");
 	for (int i = 0; i < N; i++) {
@@ -123,21 +113,23 @@ void computeOutFileForPloting()
 }
 int main() {
 	
-	CNode* n1 = new CNode("NOD1", 11, 20, NULL, 10, 1);
-	//CNode* n2 = new CNode("Nod2", 11, 20, n1, 10, 2);
-	//CNode* n3 = new CNode("Nod3", 11, 20, n2, 10, 2);
-	//CNode* n4 = new CNode("Nod4", 11, 20, n1, 10, 2);
+	CNode* n1 = new CNode("NOD1", 11, 20, NULL,2 , 1);
 
-	n1->readTaskFromFile("Tasks_node1.txt");
+	n1->readTaskFromFile("tasks1.txt");
 	 
 	CScheduler::getInstance()->scheduleTasksForNode(n1);
 	CScheduler::getInstance()->printScheduledTasks(n1);
 
 	CScheduler::getInstance()->computeOutFileForPloting(n1);
 
-	//CScheduler::getInstance()->DFS(n1);
-	CTimetable t(CUtils::parseDateTime("2024.02.11", "%Y.%m.%d"));
-	t.print();
-	cout << t.getNrOfJobsBetween(CUtils::parseDateTime("2024.04.11", "%Y.%m.%d"), CUtils::parseDateTime("2024.06.15", "%Y.%m.%d"));
+	////CScheduler::getInstance()->DFS(n1);
+	//CTimetable t(CUtils::parseDateTime("2024.02.05", "%Y.%m.%d"));
+	//
+	//
+	//time_t start = CUtils::parseDateTime("2024.04.15", "%Y.%m.%d"), stop = CUtils::parseDateTime("2024.05.15", "%Y.%m.%d");
+	////t.print();
+	////cout << t.getNrOfJobsBetween(CUtils::parseDateTime("2024.04.11", "%Y.%m.%d"), CUtils::parseDateTime("2024.06.15", "%Y.%m.%d"));
+	////cout << t.verifyInterval(start, stop) << endl;
+	//cout << nodeCapacity << " " << CUtils::dateToString(stop, "%Y.%m.%d");
 	return 0;
 }

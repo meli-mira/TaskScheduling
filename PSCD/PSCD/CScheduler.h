@@ -21,22 +21,14 @@ private:
 	~CScheduler();
 
 	bool checkTaskDependencies(CTask* t, time_t startDate, time_t endDate);
-	void setTasksResourcesOcupied(CTask* t);
+	void setTasksResourcesOcupied(CTask* t, time_t startDate, time_t endDate);
 
-	int scheduleTaskCaseFixed(CNode* n, CTask* t);
-	int scheduleTaskCase1(int& startTime, CTask* t);
-	int scheduleTaskCase2(int& startTime, vector<CTask*>tasks, int i);
 public:
 	static CScheduler* getInstance();
 	static void destroyInstance();
 
-	void addPlannedTask(CTask* t, CNode* n);
-
-	bool isTheResourceUsed(CResource* r, time_t startTime, time_t endTime);
-	bool isTheNodeOcupied(CNode* n, time_t startTime, time_t endTime);
-
-	void scheduleTasksForNode(CNode* n);
 	void scheduleAll();
+	void scheduleTasksForNode(CNode* n);
 
 	void printScheduledTasks(CNode* n);
 	void computeOutFileForPloting(CNode* n);

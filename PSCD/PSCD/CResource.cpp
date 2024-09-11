@@ -6,6 +6,8 @@ CResource::CResource(string name)
 {
 	this->name = name;
 	this->resource_id = id++;
+
+	timetable = new CTimetable(time(0));
 }
 
 CResource::~CResource()
@@ -22,18 +24,24 @@ string CResource::getName() const
 	return name;
 }
 
-void CResource::addTask(CTask* t)
-{
-	alocare.push_back(t);
-}
-
 bool CResource::isTheResourceAllocated(time_t startTime, time_t endTime)
 {
-	for (int i = 0; i < alocare.size(); i++)
-	{
-		if (!(CUtils::compareDates(startTime, alocare[i]->getEndDate()) == 0 || CUtils::compareDates(alocare[i]->getStartDate(), endTime) == 0))
-			return true;
-	}
+	if (timetable->getNrOfJobsBetween(startTime, endTime) >= 1)
+		return false;
+	else
+		return true;
+}
 
-	return false;
+bool CResource::isTheResourceAllocated(int index)
+{
+	if (timetable->at(index) != 0)
+		return true;
+	else
+		return false;
+}
+
+void CResource::setTheResourceOcupied(CTask* t, time_t startTime, time_t endTime)
+{
+	timetable->setOcupied(startTime, endTime);
+	alocare.push_back(make_pair(t, make_pair(startTime, endTime)));
 }

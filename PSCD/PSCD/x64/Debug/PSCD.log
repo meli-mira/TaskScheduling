@@ -1,1 +1,18 @@
-﻿  PSCD.vcxproj -> C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\x64\Debug\PSCD.exe
+﻿  CNode.cpp
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CTask.h(13,2): warning C4091: 'typedef ': ignored on left of 'TaskType' when no variable is declared
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CNode.cpp(108,30): warning C4101: 'endDate': unreferenced local variable
+  CNotification.cpp
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CTask.h(13,2): warning C4091: 'typedef ': ignored on left of 'TaskType' when no variable is declared
+  CResource.cpp
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CTask.h(13,2): warning C4091: 'typedef ': ignored on left of 'TaskType' when no variable is declared
+  CScheduler.cpp
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CTask.h(13,2): warning C4091: 'typedef ': ignored on left of 'TaskType' when no variable is declared
+  CTask.cpp
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CTask.h(13,2): warning C4091: 'typedef ': ignored on left of 'TaskType' when no variable is declared
+  CTimetable.cpp
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CTimetable.cpp(80,8): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CTimetable.cpp(101,8): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Source.cpp
+C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\PSCD\CTask.h(13,2): warning C4091: 'typedef ': ignored on left of 'TaskType' when no variable is declared
+  Generating Code...
+  PSCD.vcxproj -> C:\Users\cetasc\source\repos\TaskScheduling_\PSCD\x64\Debug\PSCD.exe

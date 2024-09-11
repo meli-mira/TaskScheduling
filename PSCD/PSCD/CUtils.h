@@ -46,9 +46,6 @@ public:
         if (x != (std::time_t)(-1) && y != (std::time_t)(-1))
         {
             difference = std::difftime(y, x) / (60 * 60 * 24);
-            std::cout << std::ctime(&x);
-            std::cout << std::ctime(&y);
-            std::cout << "difference = " << difference << " days" << std::endl;
         }
 
         return difference;
@@ -56,7 +53,7 @@ public:
 
     static time_t addDays(time_t date, int days)
     {
-        date += (60 * 60 * 24 * days);
+        date += (60 * 60 * 24 * (days));
         return date;
     }
 
@@ -65,7 +62,7 @@ public:
         date -= (60 * 60 * 24 * days);
         return date;
     }
-    static int compareDates(time_t date1, time_t date2)//date1<=date2
+    static int compareDates(time_t date1, time_t date2)// true if date1<=date2
     {
         struct tm timeinfo1, timeinfo2;
         localtime_s(&timeinfo1, &date1);

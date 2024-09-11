@@ -56,9 +56,6 @@
     <ClCompile Include="CScheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CUtils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="CLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -70,16 +67,11 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Tasks_node1.txt">
+    <Text Include="nodes.txt">
       <Filter>Resource Files</Filter>
     </Text>
-    <Text Include="out.txt">
+    <Text Include="tasks1.txt">
       <Filter>Resource Files</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="log.out">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

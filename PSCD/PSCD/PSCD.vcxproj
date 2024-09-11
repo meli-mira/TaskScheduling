@@ -147,15 +147,11 @@
     <ClCompile Include="CScheduler.cpp" />
     <ClCompile Include="CTask.cpp" />
     <ClCompile Include="CTimetable.cpp" />
-    <ClCompile Include="CUtils.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="out.txt" />
-    <Text Include="Tasks_node1.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="log.out" />
+    <Text Include="nodes.txt" />
+    <Text Include="tasks1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

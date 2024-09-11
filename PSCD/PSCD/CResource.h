@@ -1,6 +1,6 @@
-
 #pragma once
 #include "CUtils.h"
+#include "CTimetable.h"
 class CResource
 {
 private:
@@ -9,7 +9,8 @@ private:
 
 	string name;
 
-	vector<class CTask*> alocare;
+	vector<pair<class CTask*, pair<time_t, time_t>>> alocare;
+	CTimetable* timetable;
 public:
 	CResource(string name);
 	~CResource();
@@ -17,9 +18,8 @@ public:
 	string getID() const;
 	string getName() const;
 
-	void addTask(class CTask* t);
-
 	bool isTheResourceAllocated(time_t startTime, time_t endTime);
-
+	bool isTheResourceAllocated(int index);
+	void setTheResourceOcupied(class CTask* t, time_t startTime, time_t endTime);
 };
 
