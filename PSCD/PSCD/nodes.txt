@@ -1,2 +1,1 @@
-Name MinPriority MaxPriority Capacity ParentNodeID
-NOD1 11 20 3 NULL
+node1.txt

@@ -1,4 +1,5 @@
 #include "CTask.h"
+#include "CScheduler.h"
 int CTask::id = 0;
 
 int CTask::verifyInterval(CTimetable* nodeTimetable, int nodeCapacity, time_t& startDate, time_t& endDate)
@@ -49,21 +50,6 @@ int CTask::verifyInterval(CTimetable* nodeTimetable, int nodeCapacity, time_t& s
 	return nr;
 }
 
-CTask::CTask(int priority, string name, string description, time_t deadline, int duration)
-{
-	this->priority = priority;
-	this->name = name;
-	this->description = description;
-	this->duration = duration;
-
-	this->deadline = deadline;
-
-	this->task_id = to_string(id);
-	id++;
-	this->hasBeenPlanned = false;
-	this->hasIssues = false;
-}
-
 CTask::CTask(int priority, string name, string description, time_t startPoint, time_t endPoint, int duration, TaskType type)
 {
 	this->priority = priority;
@@ -80,6 +66,41 @@ CTask::CTask(int priority, string name, string description, time_t startPoint, t
 
 	this->startNoEarlierThan = startPoint;
 	this->deadline = endPoint;
+}
+
+CTask::CTask(int priority, string name, string description, time_t startPoint, time_t endPoint, int duration, TaskType type, string resourceFile)
+{
+	this->priority = priority;
+	this->name = name;
+	this->description = description;
+	this->duration = duration;
+
+	this->hasBeenPlanned = false;
+	this->hasIssues = false;
+	this->taskType = type;
+
+	this->task_id = to_string(id);
+	id++;
+
+	this->startNoEarlierThan = startPoint;
+	this->deadline = endPoint;
+
+	ifstream f(resourceFile);
+	CResource* r;
+
+	string resourceID;
+	while (f >> resourceID) {
+		r = CScheduler::getInstance()->searchResource(resourceID);
+		if (r != NULL)
+			usedResources.push_back(r);
+	}
+
+	f.close();
+}
+
+string CTask::getID() const
+{
+	return task_id;
 }
 
 string CTask::getName() const
@@ -189,6 +210,8 @@ int CTask::scheduleTask(CTimetable* nodeTimetable, int nodeCapacity)
 
 		//success
 		//set the resources of the planned task ocupied
+		for (int i = 0; i < this->usedResources.size(); i++)
+			usedResources[i]->setTheResourceOcupied(this, startDate, endDate);
 	}
 	else {
 		//todo notification  + mai prioritar?
@@ -199,6 +222,20 @@ int CTask::scheduleTask(CTimetable* nodeTimetable, int nodeCapacity)
 	}
 
 	return 0;
+}
+
+int CTask::unscheduleTask(CTimetable* nodeTimetable)
+{
+	if (this->hasBeenPlanned == false)
+		return -1;
+	//unschedule resources used
+	for (int i = 0; i < usedResources.size(); i++)
+		usedResources[i]->unsetsetTheResourceOcupied(this, this->startDate, this->endDate);
+
+	this->hasBeenPlanned = false;
+	this->startDate = 0;
+	this->endDate = 0;
+	nodeTimetable->unsetOcupied(this->startDate, this->endDate);
 }
 
 void CTask::print()

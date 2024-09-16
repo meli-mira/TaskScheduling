@@ -86,6 +86,18 @@ void CTimetable::setOcupied(time_t startDate, time_t endDate)
 	}
 }
 
+void CTimetable::unsetOcupied(time_t startDate, time_t endDate)
+{
+	int startIndex = getIndexForDate(startDate);
+	int n = CUtils::getDaysBetween(startDate, endDate);
+
+	for (int i = startIndex; i <= startIndex + n; i++)
+	{
+		if (year[i] != -1)
+			year[i]--;
+	}
+}
+
 void CTimetable::print()
 {
 	for (int i = 1; i <= ian + feb + mar + apr + may + iun + iul + aug + sep + oct + nov + dec; i++)

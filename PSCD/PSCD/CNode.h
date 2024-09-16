@@ -42,7 +42,7 @@ public:
 	vector<CNode*> getChildren() const;
 	CNode* getParentNode() const;
 
-	void readTaskFromFile(string filename);
+	void readTasksFromFile(string filename);
 
 	vector<CTask*> getTasks() const;
 

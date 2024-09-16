@@ -1,0 +1,9 @@
+resursa1 1
+resursa2 1
+resursa3 1
+resursa4 1
+resursa5 1
+resursa6 1
+resursa7 1
+resursa8 1
+resursa10 1

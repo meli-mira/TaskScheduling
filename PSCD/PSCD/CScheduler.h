@@ -33,9 +33,13 @@ public:
 	void printScheduledTasks(CNode* n);
 	void computeOutFileForPloting(CNode* n);
 
+	CNode* readNodeFromFile(string filename);
 	void readNodesFromFile(string filaname);
 	void readResourcesFromFile(string filename);
 
+	CNode* searchNode(string id);
+	CResource* searchResource(string id);
+	
 	void DFS(CNode* Node);
 };
 
