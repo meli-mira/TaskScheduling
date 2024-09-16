@@ -88,9 +88,36 @@ void CScheduler::computeOutFileForPloting(CNode* n)
 	g.close();
 }
 
+CNode* CScheduler::readNodeFromFile(string filename)
+{
+	ifstream f(filename);
+
+	string nodeName, nodeTasksFile, parentNodeID;
+	int minPriority, maxPriority, capacity, level;
+
+	CNode* n = NULL;
+	while (!f.eof())
+	{
+		f >> nodeName >> minPriority >> maxPriority >> parentNodeID >> capacity >> level >> nodeTasksFile;
+
+		n = new CNode(nodeName, minPriority, maxPriority, searchNode(parentNodeID), capacity, level);
+		n->readTasksFromFile(nodeTasksFile);
+
+		this->nodes.push_back(n);
+	}
+
+	f.close();
+	return n;
+}
+
 void CScheduler::readNodesFromFile(string filename)
 {
 	ifstream f(filename);
+	string nodeFile;
+
+	while (f >> nodeFile)
+		readNodeFromFile(nodeFile);
+	
 	f.close();
 }
 
@@ -98,15 +125,36 @@ void CScheduler::readResourcesFromFile(string filename)
 {
 	ifstream f(filename);
 	string resourceName;
+	int resourceCapacity;
 
 	CResource* r;
 
-	while (f >> resourceName) {
-		r = new CResource(resourceName);
+	while (f >> resourceName >> resourceCapacity) {
+		r = new CResource(resourceName, resourceCapacity);
 		resources.push_back(r);
 	}
 
 	f.close();
+}
+
+CNode* CScheduler::searchNode(string id)
+{
+	for (int i = 0; i < nodes.size(); i++)
+	{
+		if (nodes[i]->getID() == id)
+			return nodes[i];
+	}
+	return NULL;
+}
+
+CResource* CScheduler::searchResource(string id)
+{
+	for (int i = 0; i < resources.size(); i++)
+	{
+		if (resources[i]->getID() == id)
+			return resources[i];
+	}
+	return  NULL;
 }
 
 void CScheduler::DFS(CNode* node)

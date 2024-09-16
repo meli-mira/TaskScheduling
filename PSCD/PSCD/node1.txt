@@ -1,0 +1,1 @@
+NOD1 11 20 0 2 1 tasks1.txt

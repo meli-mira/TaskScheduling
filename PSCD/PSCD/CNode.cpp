@@ -1,6 +1,6 @@
 #include "CNode.h"
 #include "CUtils.h"
-int CNode::id = 0;
+int CNode::id = 1;
 
 CNode::CNode(string name, int minPriority, int maxPriority, CNode* parentNode, int capacity, int level)
 {
@@ -65,19 +65,19 @@ CNode* CNode::getParentNode() const
 	return parentNode;
 }
 
-void CNode::readTaskFromFile(string filename)
+void CNode::readTasksFromFile(string filename)
 {
 	ifstream f(filename);
-	string taskName, taskDescription, taskStartNoEarlienThan, taskDeadline, type;
+	string taskName, taskDescription, taskStartNoEarlienThan, taskDeadline, type, resourceFile;
 	int taskDuration, taskPriority;
 	CTask* t;
 
-	while (f >> taskName >> taskPriority >> taskDescription >> type >> taskStartNoEarlienThan >> taskDeadline >> taskDuration)
+	while (f >> taskName >> taskPriority >> taskDescription >> type >> taskStartNoEarlienThan >> taskDeadline >> taskDuration >> resourceFile)
 	{
 		if (type == "I")
-			t = new CTask(taskPriority, taskName, taskDescription, CUtils::parseDateTime(taskStartNoEarlienThan.c_str(), "%Y-%m-%d"), CUtils::parseDateTime(taskDeadline.c_str(), "%Y-%m-%d"), taskDuration, INTERVAL_BASED);
+			t = new CTask(taskPriority, taskName, taskDescription, CUtils::parseDateTime(taskStartNoEarlienThan.c_str(), "%Y-%m-%d"), CUtils::parseDateTime(taskDeadline.c_str(), "%Y-%m-%d"), taskDuration, INTERVAL_BASED, resourceFile);
 		else
-			t = new CTask(taskPriority, taskName, taskDescription, CUtils::parseDateTime(taskStartNoEarlienThan.c_str(), "%Y-%m-%d"), CUtils::parseDateTime(taskDeadline.c_str(), "%Y-%m-%d"), taskDuration, FIXED);
+			t = new CTask(taskPriority, taskName, taskDescription, CUtils::parseDateTime(taskStartNoEarlienThan.c_str(), "%Y-%m-%d"), CUtils::parseDateTime(taskDeadline.c_str(), "%Y-%m-%d"), taskDuration, FIXED, resourceFile);
 		tasks.push_back(t);
 	}
 
@@ -106,15 +106,10 @@ void CNode::sortTasksByDeadline()
 void CNode::scheduleTasks()
 {
 	time_t startDate = time(0), endDate;
-
-	// Sort tasks by deadline
 	sortTasksByDeadline();
 
 	for (int i = 0; i < tasks.size(); i++)
-	{
 		tasks[i]->scheduleTask(timetable, capacity);
-		
-	}
 }
 
 CNode::~CNode()

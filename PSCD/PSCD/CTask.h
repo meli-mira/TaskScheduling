@@ -35,9 +35,10 @@ private:
 
 	int verifyInterval(CTimetable* nodeTimetable, int nodeCapacity, time_t& startTime, time_t& stopTime);
 public:
-	CTask(int priority, string name, string description, time_t deadline, int duration);
 	CTask(int priority, string name, string description, time_t startPoint, time_t endPoint, int duration, TaskType type);
+	CTask(int priority, string name, string description, time_t startPoint, time_t endPoint, int duration, TaskType type, string resourceFile);
 
+	string getID() const;
 	string getName() const;
 	time_t getStartDate() const;
 	time_t getEndDate() const;
@@ -60,6 +61,7 @@ public:
 	void addResource(CResource* r);
 
 	int scheduleTask(CTimetable* nodeTimetable, int nodeCapacity);
+	int unscheduleTask(CTimetable* nodeTimetable);
 
 	void print();
 

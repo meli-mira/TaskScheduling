@@ -113,10 +113,10 @@ void computeOutFileForPloting()
 }
 int main() {
 	
-	CNode* n1 = new CNode("NOD1", 11, 20, NULL,2 , 1);
+	CScheduler::getInstance()->readResourcesFromFile("allResources.txt");
+	CNode* n1 = CScheduler::getInstance()->readNodeFromFile("node1.txt");
+	
 
-	n1->readTaskFromFile("tasks1.txt");
-	 
 	CScheduler::getInstance()->scheduleTasksForNode(n1);
 	CScheduler::getInstance()->printScheduledTasks(n1);
 

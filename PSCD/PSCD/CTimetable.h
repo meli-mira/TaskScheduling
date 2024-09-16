@@ -13,6 +13,8 @@ public:
 	CTimetable(time_t startDateOfCalendar);
 
 	void setOcupied(time_t startDate, time_t endDate);
+	void unsetOcupied(time_t startDate, time_t endDate);
+
 	void print();
 
 	int getNrOfJobsBetween(time_t startDate, time_t endDate);
